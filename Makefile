@@ -1,7 +1,7 @@
 
 OCAMLMAKEFILE = OCamlMakefile
 
-PACKS=pocgame pociface zip
+PACKS=num pocgame pociface zip
 
 SOURCES = engine.ml
 THREADS=yes
