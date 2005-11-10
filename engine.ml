@@ -1,6 +1,5 @@
 open Core_event;;
 open Core_main;;
-open Core_video;;
 open Core_stage;;
 open Core_xml;;
 open Game_engine;;
@@ -27,10 +26,10 @@ let extract zipfile =
     pdir.Zip.filename;;
 
 
-let xml_my_stages_parser()=
-  let p=xml_factory_stages_parser() in
-    p#parser_add "iface_stage" (fun()->new xml_iface_stage_parser);
-    p#parser_add "game_engine" (fun()->new xml_game_engine_stage_parser);
+let xml_my_stages_parser drawing_vault=
+  let p=xml_factory_stages_parser drawing_vault in
+    p#parser_add "iface_stage" (fun()->new xml_iface_stage_parser drawing_vault);
+    p#parser_add "game_engine" (fun()->new xml_game_engine_stage_parser drawing_vault);
     p;;
 
 Global.set xml_default_stages_parser xml_my_stages_parser;;
