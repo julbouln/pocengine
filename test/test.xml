@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf8"?>
+<xpoc xmlns:xi="http://www.w3.org/2001/XInclude">
+ <infos>
+   <val_string name="cmd" value="test"/>
+   <val_string name="name" value="Test"/>
+   <val_string name="version" value="0.1"/>
+ </infos>
+  
+  <args>
+
+  <val_size name="video_size" w="800" h="600"/>
+  <val_size name="video_default_size" w="1024" h="768"/>
+
+  <val_string name="stage_start" value="test"/>
+ </args>
+
+ <stages>
+  <stage id="test" type="sprite_engine">
+  <args>
+  <val_bool name="show_fps" value="true"/>
+  </args>
+  <sprite_types>
+   <sprite_type name="lapin">
+    <graphics>
+     <graphic id="main" type="graphic_from_drawing_script">
+
+     <args>
+       <val_string name="drawing_id" value="lapin_gr"/>
+       <val_text name="drawing_script">
+--      rs=randomize(50);
+
+rs=25;
+rrs=20;
+        dr=self.create("load",{{w=540,h=727},"test/lapin.png"});
+	drr=self.copy(dr,0,"resize",{{w=rs,h=rs}});
+        self.write(drr,0,"set_alpha",{64,{r=255,g=255,b=255}});
+	crs=rs;
+	mrs=rs-rrs;
+	print (crs);
+	while crs ~= mrs do
+	print (crs);
+	self.push(drr,dr,0,"resize",{{w=crs,h=crs}});
+	crs=crs-1
+	end
+
+        return drr
+      </val_text>
+     </args>     
+     <script>
+     function self.on_update()
+        obj=self.parent.parent;
+	self.move(obj.get_x(),obj.get_y())
+     end
+     </script>
+     </graphic>
+    </graphics>
+    <states>
+    <state id="normal">
+    <action id="anim" type="action_anim">
+    <args>
+    <val_int name="refresh" value="2"/>
+    <val_list name="frames">
+    <val_int value="0"/>
+    <val_int value="1"/>
+    <val_int value="2"/>
+    <val_int value="3"/>
+    <val_int value="4"/>
+    <val_int value="5"/>
+    <val_int value="6"/>
+    <val_int value="7"/>
+    <val_int value="8"/>
+    <val_int value="9"/>
+    <val_int value="10"/>
+    <val_int value="11"/>
+    <val_int value="12"/>
+    <val_int value="13"/>
+    <val_int value="14"/>
+    <val_int value="13"/>
+    <val_int value="12"/>
+    <val_int value="11"/>
+    <val_int value="10"/>
+    <val_int value="9"/>
+    <val_int value="8"/>
+    <val_int value="7"/>
+    <val_int value="6"/>
+    <val_int value="5"/>
+    <val_int value="4"/>
+    <val_int value="3"/>
+    <val_int value="2"/>
+    <val_int value="1"/>
+	  </val_list>
+    </args>
+    <script>
+     function self.on_loop()
+     obj=self.parent.parent.parent;
+     fr=self.get_frame();
+     obj.graphics.main.set_cur_drawing (fr);
+--     print(fr); 
+    end
+    </script>
+    </action>
+    </state>
+    </states>
+
+    <args>
+    <val_size  name="pixel_size" w="540" h="727"/>
+    </args>
+   </sprite_type>
+  </sprite_types>
+  <interactions>
+   <interaction type="interaction_lua">
+   <script>
+    function self.on_keypress(e)
+     if e=="echap" then
+      exit(2)
+     end
+    end
+   </script>
+   </interaction>
+  </interactions>
+  <script>
+
+self.nlapin=0;
+
+function self.ajoute_lapin()
+  self.nlapin=self.nlapin+1;
+  print("nouveau lapin!");
+  print (self.nlapin);
+  nx=randomize(800) - 150;
+  ny=randomize(600) - 100;
+  n=self.sprites.add_sprite_from_type("lapin",nx,ny);
+  self.sprites[n].graphics.main.set_layer(self.nlapin);
+  self.sprites[n].states.set_state("normal",{});
+end
+
+  function self.on_load()
+
+  self.timer.add_task(val_time(0,0,0,5),self.ajoute_lapin);
+
+   self.timer.start();
+  end
+
+
+  function self.on_loop()
+  self.timer.step();
+
+  end
+  </script>
+  </stage>
+</stages>
+
+</xpoc>
