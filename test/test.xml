@@ -20,8 +20,33 @@
   <val_bool name="show_fps" value="true"/>
   </args>
   <sprite_types>
+       <sprite_type name="fond">
+	 <graphics>
+	   <graphic id="main" type="graphic_from_drawing_script">
+	     <args>
+	       <val_string name="drawing_id" value="fond_gr"/>
+       <val_text name="drawing_script">
+        dr=self.create("box",{{r=0,g=0,b=255},{w=800,h=600}});
+	return dr
+</val_text>
+	     </args>
+
+	     <script>
+          function self.on_update()
+        obj=self.parent.parent;
+  	self.move(obj.get_x(),obj.get_y())
+     end
+        </script>
+	   </graphic>
+	   </graphics>
+	 <args>
+	   <val_size name="pixel_size" w="800" h="600"/>
+	 </args>
+</sprite_type>
+
    <sprite_type name="lapin">
     <graphics>
+
      <graphic id="main" type="graphic_from_drawing_script">
 
      <args>
@@ -36,9 +61,9 @@ rrs=20;
         self.write(drr,0,"set_alpha",{64,{r=255,g=255,b=255}});
 	crs=rs;
 	mrs=rs-rrs;
-	print (crs);
+--	print (crs);
 	while crs ~= mrs do
-	print (crs);
+--	print (crs);
 	self.push(drr,dr,0,"resize",{{w=crs,h=crs}});
 	crs=crs-1
 	end
@@ -120,7 +145,9 @@ rrs=20;
   </interactions>
   <script>
 
+self.maxlapin=100;
 self.nlapin=0;
+self.lapin_ref={};
 
 function self.ajoute_lapin()
   self.nlapin=self.nlapin+1;
@@ -131,11 +158,16 @@ function self.ajoute_lapin()
   n=self.sprites.add_sprite_from_type("lapin",nx,ny);
   self.sprites[n].graphics.main.set_layer(self.nlapin);
   self.sprites[n].states.set_state("normal",{});
+  self.lapin_ref[self.nlapin]=n;
+  if self.nlapin &gt; self.maxlapin then
+  self.sprites.delete_sprite(self.lapin_ref[self.nlapin-self.maxlapin]) 
+  end
+
 end
 
   function self.on_load()
-
-  self.timer.add_task(val_time(0,0,0,5),self.ajoute_lapin);
+  fond=self.sprites.add_sprite_from_type("fond",0,0);
+  self.timer.add_task(val_time(0,0,1,0),self.ajoute_lapin);
 
    self.timer.start();
   end
