@@ -11,7 +11,7 @@
 
 <!-- Stages -->
 
-<!ELEMENT stages (stage*)>
+<!ELEMENT stages (xi:include+,stage*)>
 <!ATTLIST stages
 	  %xi.attrib;
 	  >
@@ -203,5 +203,6 @@
 <!ATTLIST xi:fallback
     xmlns:xi   CDATA   #FIXED   "http://www.w3.org/2001/XInclude"
 >
+
 
 

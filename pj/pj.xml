@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="utf8"?>
+<!DOCTYPE xpoc SYSTEM "../xpoc.dtd">
+<xpoc xmlns:xi="http://www.w3.org/2001/XInclude">
+  <infos>
+    <val_string name="cmd" value="test"/>
+    <val_string name="name" value="Plutonium Jo"/>
+    <val_string name="version" value="0.1"/>
+  </infos>
+  
+  <args>
+    
+    <val_size name="video_size" w="800" h="600"/>
+    <val_size name="video_default_size" w="1024" h="768"/>
+    
+    <val_string name="stage_start" value="intro"/>
+  </args>
+  
+  <stages>
+   <xi:include href="intro_poc.xml"/>
+   <xi:include href="intro.xml"/>
+    <stage id="main" type="sprite_engine">
+      <args>
+<!--	<val_bool name="show_fps" value="true"/> -->
+      </args>
+      <sprite_types>
+	<sprite_type name="bg">
+	  <graphics>
+
+	   <graphic id="stitre" type="graphic_text">
+	     <args>
+	       <val_int name="layer" value="2"/>
+	       <val_string name="font_file" value="medias/PLANS___.TTF"/>
+	       <val_int name="font_size" value="24"/>
+	       <val_color name="font_color" r="0" g="0" b="0"/>
+	     </args>
+	     <script>
+		self.set_text("Plutonium Jo");
+	     function self.on_update()
+		obj=self.parent.parent;
+		self.move(7,7)
+	     end
+	     </script>
+	   </graphic>
+
+	   <graphic id="titre" type="graphic_text">
+	     <args>
+	       <val_int name="layer" value="4"/>
+	       <val_string name="font_file" value="medias/PLANS___.TTF"/>
+	       <val_int name="font_size" value="24"/>
+	       <val_color name="font_color" r="20" g="200" b="20"/>
+	     </args>
+	     <script>
+		self.set_text("Plutonium Jo");
+	     function self.on_update()
+		obj=self.parent.parent;
+		self.move(4,4)
+	     end
+	     </script>
+	   </graphic>
+
+	    <graphic id="main" type="graphic_from_file">
+	      
+	      <args>
+		<val_string name="filename" value="medias/bg.png"/>
+		<val_size name="size" w="800" h="600"/>
+		<val_int name="layer" value="-10"/>	    
+	      </args>
+	    </graphic>
+	  </graphics>
+	  <args>
+
+	    <val_size  name="pixel_size" w="800" h="600"/>
+	  </args>	  
+	</sprite_type>
+
+	<sprite_type name="plateforme">
+	  <graphics>
+	    <graphic id="main" type="graphic_from_file">
+	      
+	      <args>
+		<val_string name="filename" value="medias/plateforme.png"/>
+		<val_size name="size" w="128" h="32"/>
+		<val_int name="layer" value="-5"/>	    
+	      </args>
+	    </graphic>
+	  </graphics>
+	  <args>
+
+	    <val_size  name="pixel_size" w="112" h="32"/>
+	  </args>	  
+	</sprite_type>
+
+	<sprite_type name="sol">
+	  <args>
+	    <val_size  name="pixel_size" w="1200" h="100"/>
+	  </args>	  
+	</sprite_type>
+
+
+	<sprite_type name="plutoniumjo">
+	  <graphics>
+
+	    <graphic id="main" type="graphic_from_drawing_fun">
+	      <args>
+		<val_string value="with_alpha"/>	   
+		<val_color r="255" g="255" b="255"/>
+		<val_string value="with_mirror"/>
+		<val_string value="load_multiple"/>
+		<val_string value="medias/plutoniumjo.png"/>
+		<val_size w="42" h="56"/>
+	      </args>
+	    </graphic>
+	  </graphics>
+	  <states>
+	    <state id="move">
+	     <action id="move" type="action_movement">
+	     </action>
+
+	      <action id="collision" type="action_collision">
+		<script>
+		function self.on_collide(id)
+		   obj=self.parent.parent.parent;
+		   
+		   
+		   if (id=="bg") then
+		   else
+		      
+		      if (obj.get_y()+obj.get_h() &lt; obj.parent[id].get_y()+20) then
+			 self.parent.parent.set_state
+			 ("move",
+			  {
+			     physics={0,pi()/2,9.8,10.0},
+			     move={2,{dir=self.parent.parent.parent.dir}}
+			  });
+			 
+			 --		  ny=obj.parent[id].get_y() - obj.get_h();
+			 --		  nx=obj.get_x();
+			 
+			 --		  obj.jump(nx,ny);
+			 
+			 --		  obj.graphics.main.on_update();
+			 --		  obj.graphics_update();
+			 
+		      end
+		   end
+		end
+		</script>		
+	      </action>
+
+	      <action id="physics" type="action_2d_physics">
+	      </action>
+	      <action id="anim" type="action_anim">
+		<args>
+		  <val_int name="refresh" value="6"/>
+		  <val_list name="frames">
+		    <val_int value="0"/>
+		    <val_int value="1"/>
+		    <val_int value="0"/>
+		    <val_int value="2"/>
+		  </val_list>
+		</args>
+
+		<script>
+
+		function self.on_loop()
+		   obj=self.parent.parent.parent;
+		   fr=self.get_frame();
+		   
+		   if (obj.dir=="east") then
+		      fr=fr+5;
+		   end
+		   
+		   obj.graphics.main.set_cur_drawing (fr);
+		end
+		</script>
+
+	      </action>
+	    </state>
+
+	    <state id="jump">
+	      <action id="collision" type="action_collision">
+		<script>
+		function self.on_collide(id)
+		   obj=self.parent.parent.parent;
+		   
+		   if (id=="bg") then
+		   else
+		      if (self.letjump &gt; 1) then
+			 if (obj.get_y() - obj.oy &gt; 0) then
+			    --		  print (obj.get_y()+obj.get_h());
+			    --		  print (obj.parent[id].get_y()+20);
+			    if (obj.get_y()+obj.get_h() &lt; obj.parent[id].get_y()+20) then
+			       
+			       self.parent.parent.set_state
+			       ("jump",
+				{
+				   physics={0,pi()/2,9.8,10.0}
+				});
+			       
+			       self.parent.parent.set_state
+			       ("normal",
+				{
+				   physics={0,pi()/2,9.8,10.0}
+				});
+			    end
+			 end
+		  end
+	       end
+	    end
+	     
+	     function self.on_start(ve)
+		self.letjump=0;
+	     end
+	     
+	     function self.on_loop()
+		self.letjump=self.letjump+1;
+	     end
+		</script>		
+	      </action>
+
+	      <action id="physics" type="action_2d_physics">
+	      </action>
+	      <action id="anim" type="action_anim">
+		<args>
+		  <val_int name="refresh" value="6"/>
+		  <val_list name="frames">
+		    <val_int value="3"/>
+
+		  </val_list>
+		</args>
+
+		<script>
+		function self.on_loop()
+		   obj=self.parent.parent.parent;
+		   fr=self.get_frame();
+		   
+		   obj.ox=obj.get_x();
+		   obj.oy=obj.get_y();
+		   
+		   if (obj.dir=="east") then
+		      fr=fr+5;
+		   end
+		   
+		   obj.graphics.main.set_cur_drawing (fr);
+		end
+		</script>
+
+	      </action>
+	    </state>
+
+	    <state id="normal">
+
+	      <action id="collision" type="action_collision">
+		<script>
+		function self.on_collide(id)
+		   obj=self.parent.parent.parent;
+		   
+		   if (id=="bg") then
+		   else
+		      if (obj.get_y()+obj.get_h() &lt; obj.parent[id].get_y()+20) then
+			 self.parent.parent.set_state
+			 ("normal",
+			  {
+			     physics={0,pi()/2,9.8,10.0}
+			  });
+		      end
+		   end
+		end
+		</script>		
+	      </action>
+
+	      <action id="physics" type="action_2d_physics">
+	      </action>
+
+	      <action id="anim" type="action_anim">
+		<args>
+		  <val_int name="refresh" value="10"/>
+		  <val_list name="frames">
+		    <val_int value="0"/>
+
+		  </val_list>
+		</args>
+
+		<script>
+		function self.on_loop()
+		   obj=self.parent.parent.parent;
+		   fr=self.get_frame();
+		   
+		   if (obj.dir=="east") then
+		      fr=fr+5;
+		   end
+		   
+		   obj.graphics.main.set_cur_drawing (fr);
+		end
+		</script>
+
+	      </action>
+
+	    </state>
+
+
+	    <state id="attack">
+
+	      <action id="collision" type="action_collision">
+		<script>
+		function self.on_collide(id)
+		   
+		   if (id=="bg") then
+		   else
+		      self.parent.parent.set_state
+		      ("attack",
+		       {
+			  physics={0,pi()/2,9.8,10.0}
+		       });
+		   end
+		end
+		</script>		
+	      </action>
+
+	      <action id="physics" type="action_2d_physics">
+	      </action>
+
+	      <action id="anim" type="action_anim">
+		<args>
+		  <val_int name="refresh" value="10"/>
+		  <val_list name="frames">
+		    <val_int value="0"/>
+		    <val_int value="4"/>
+
+		  </val_list>
+		</args>
+
+		<script>
+		function self.on_loop()
+		   obj=self.parent.parent.parent;
+		   fr=self.get_frame();
+		   
+		   if (obj.dir=="east") then
+		      fr=fr+5;
+		   end
+		   
+		   obj.graphics.main.set_cur_drawing (fr);
+		end
+		</script>
+
+	      </action>
+
+	    </state>
+
+	  </states>
+	  
+	  <args>
+	    <val_size  name="pixel_size" w="30" h="56"/>
+	  </args>
+	  <script>
+		self.dir="west";
+	  </script>
+
+	</sprite_type>
+
+
+	<sprite_type name="carotte">
+	  <graphics>
+
+	    <graphic id="main" type="graphic_from_drawing_fun">
+	      <args>
+		<val_string value="with_alpha"/>	   
+		<val_color r="255" g="255" b="255"/>
+		<val_string value="with_mirror"/>
+		<val_string value="load_multiple"/>
+		<val_string value="medias/carotte.png"/>
+		<val_size w="64" h="92"/>
+	      </args>
+	    </graphic>
+	  </graphics>
+	  <states>
+	    <state id="move">
+	     <action id="move" type="action_movement">
+	       <script>
+		function self.on_loop()
+		   
+		   obj=self.parent.parent.parent;
+		   x=obj.get_x();
+		   y=obj.get_y();
+		   
+		   if(x &gt; 800) then
+		      self.parent.parent.set_state("move",
+						   {
+						      physics={0,pi()/2,9.8,10.0},
+						      move={2,{dir="east"}}
+						   });
+		      self.parent.parent.parent.dir="east";
+		   end
+		   
+		   if(x &lt; 0) then
+		      self.parent.parent.set_state("move",
+						   {
+						      physics={0,pi()/2,9.8,10.0},
+						      move={2,{dir="west"}}
+						   });
+		      self.parent.parent.parent.dir="west";
+		   end
+
+
+		end
+	       </script>
+	     </action>
+
+	      <action id="collision" type="action_collision">
+		<script>
+		function self.on_collide(id)
+		   obj=self.parent.parent.parent;
+		   
+		   if (id=="bg" or obj.parent[id].get_type()=="carotte") then
+		   else
+		      if (obj.get_y()+obj.get_h() &lt; obj.parent[id].get_y()+20) then
+			 self.parent.parent.set_state("move",
+						      {
+							 physics={0,pi()/2,9.8,10.0},
+							 move={1,{dir=self.parent.parent.parent.dir}}
+						      });
+		      end
+		   end
+		end
+		</script>		
+	      </action>
+
+	      <action id="physics" type="action_2d_physics">
+	      </action>
+	      <action id="anim" type="action_anim">
+		<args>
+		  <val_int name="refresh" value="8"/>
+		  <val_list name="frames">
+		    <val_int value="0"/>
+		    <val_int value="1"/>
+		    <val_int value="0"/>
+		    <val_int value="2"/>
+		  </val_list>
+		</args>
+
+		<script>
+
+		  function self.on_loop()
+		     obj=self.parent.parent.parent;
+		     fr=self.get_frame();
+		     
+		     if (obj.dir=="east") then
+			fr=fr+3;
+		     end
+		     
+		     obj.graphics.main.set_cur_drawing (fr);
+		  end
+		</script>
+
+	      </action>
+	    </state>
+
+
+	    <state id="normal">
+
+	      <action id="collision" type="action_collision">
+		<script>
+		  function self.on_collide(id)
+		     
+		     if (id=="bg") then
+		     else
+			self.parent.parent.set_state
+			("normal",
+			 {
+			    physics={0,pi()/2,9.8,10.0}
+			 });
+		     end
+		  end
+		</script>		
+	      </action>
+
+	      <action id="physics" type="action_2d_physics">
+	      </action>
+
+	      <action id="anim" type="action_anim">
+		<args>
+		  <val_int name="refresh" value="10"/>
+		  <val_list name="frames">
+		    <val_int value="0"/>
+
+		  </val_list>
+		</args>
+
+		<script>
+		  function self.on_loop()
+		     obj=self.parent.parent.parent;
+		     fr=self.get_frame();
+		     
+		     if (obj.dir=="east") then
+			fr=fr+3;
+		     end
+		     
+		     obj.graphics.main.set_cur_drawing (fr);
+		  end
+		</script>
+
+	      </action>
+
+	    </state>
+	  </states>
+	  
+	  <args>
+	    <val_size  name="pixel_size" w="48" h="92"/>
+	  </args>
+	  <script>
+		  self.dir="west";
+	  </script>
+
+	</sprite_type>
+
+
+      </sprite_types>
+      <interactions>
+	<interaction type="interaction_lua">
+	  <script>
+		  
+		  
+	       function self.on_keyrelease(e)
+		  curstate=self.parent.parent.sprites["pj"].states.get_state();
+		  if (curstate=="jump") then 
+		  else
+		     if e=="right" or e=="left" or e=="space" then
+			self.parent.parent.sprites["pj"].states.set_state
+			("normal",
+			 {physics={0,pi()/2,9.8,10.0}}
+		      );
+		     end
+		  end
+	       end
+	       
+	       
+	       function self.on_keypress(e)
+		  if e=="echap" then
+		     exit(2)
+		  end
+		  
+		  curstate=self.parent.parent.sprites["pj"].states.get_state();
+		  
+		  
+		  if e=="space" then
+		     if(curstate == "jump") then
+			
+		     else
+			print("attack");
+			self.parent.parent.sprites["pj"].states.set_state
+			("attack",
+			 {
+			    physics={0,pi()/2,9.8,10.0}
+			 });
+			
+	    
+		     end
+		  end
+		  
+		  if e=="right" then
+		     if(curstate == "jump") then
+			
+		     else
+			
+			self.parent.parent.sprites["pj"].states.set_state
+			("move",
+			 {
+			    physics={0,pi()/2,9.8,10.0},
+			    move={2,{dir="west"}}
+			 });
+			
+			self.parent.parent.sprites["pj"].dir="west";
+			
+		     end
+		  end
+
+
+		  if e=="left" then
+		     if(curstate == "jump") then
+			
+		     else
+			self.parent.parent.sprites["pj"].states.set_state
+			("move",
+			 {
+			    physics={0,pi()/2,9.8,10.0},
+			    move={2,{dir="east"}}
+			 });
+			self.parent.parent.sprites["pj"].dir="east";
+		     end
+		  end
+
+		  if e=="up" then
+		     
+		     
+		     if(curstate == "jump") then
+		  
+		     else
+			
+			
+			if(curstate == "normal") then
+			   angle=pi()/2;
+			end
+			
+			if(curstate == "move") then
+			   if(self.parent.parent.sprites["pj"].dir=="east") then
+			      angle=pi()/3;
+			   end
+			   
+			   if(self.parent.parent.sprites["pj"].dir=="west") then
+			      angle=2*pi()/3;
+			   end
+			   
+			end
+			
+			self.parent.parent.sprites["pj"].states.set_state
+			("jump",
+			 {
+			    physics={-8,angle,9.8,10.0},
+			 });
+		     end
+		     
+		  end
+		  
+	       end
+	       
+	  </script>
+	</interaction>
+      </interactions>
+      <script>
+		  
+		  function self.on_load()
+		     self.sprites.add_sprite_named_from_type("bg","bg",0,0);
+		     self.sprites.add_sprite_named_from_type("pj","plutoniumjo",100,0);
+		     self.sprites.add_sprite_from_type("sol",-200,600);
+		     
+		     self.npc=0;
+		     while(self.npc &lt; 5) do
+			nx=randomize(800) - 100;
+			ny=randomize(600) - 50;
+			c=self.sprites.add_sprite_from_type("carotte",nx,0);
+			
+			self.sprites[c].states.set_state
+			("move",
+			 {
+			    physics={0,pi()/2,9.8,10.0},
+			    move={2,{dir="west"}}
+			 });
+			self.npc=self.npc +1;
+		     end
+		     
+		     self.npf=0;
+		     
+		     while(self.npf &lt; 50) do
+			nx=randomize(10);
+			ny=randomize(20);
+			self.sprites.add_sprite_from_type("plateforme",nx*128,ny*32);
+			self.npf=self.npf +1;
+		     end
+		     
+		     
+		     self.sprites["pj"].states.set_state
+		     ("normal",
+		      {
+			 physics={0,pi()/2,9.8,10.0}
+		      });
+		     
+		     self.timer.start();
+		     
+		     self.sprites.save_to_file("blabla.xml");
+		  end
+	       
+
+	       function self.on_loop()
+		  self.timer.step();
+		  
+	       end
+      </script>
+    </stage>
+  </stages>
+  
+</xpoc>

@@ -1,0 +1,307 @@
+<stage id="intro" type="sprite_engine"
+       xmlns:xi="http://www.w3.org/2001/XInclude">
+  <sprite_types>
+ 
+    <sprite_type name="star">
+      <graphics>
+	<graphic id="main" type="graphic_from_drawing_script">
+	  <args>
+	    <val_int name="layer" value="1"/>
+	    <val_text name="drawing_script">
+	      dr=self.create("box",{{r=200,g=200,b=200},{w=1,h=1}});
+	      return dr
+	    </val_text>
+	  </args>
+	</graphic>
+      </graphics>
+      <states>
+	<state id="normal">
+	  </state>
+	<state id="move">
+	  <action id="move" type="action_movement">
+	  </action>
+
+	  <action id="immobile" type="action_intime">
+	    <args>
+	  <val_time name="limit" h="0" m="10" s="0" f="0"/>
+	    </args>
+	    <script>
+	      function self.on_loop()
+		 obj=self.parent.parent.parent;
+		 stages=obj.parent.parent.parent;
+		 obj.states.set_state("normal",{});
+	      end
+	    </script>
+	  </action>
+	</state>
+      </states>
+      <args>
+	<val_size name="pixel_size" w="1" h="1"/>
+      </args>
+    </sprite_type>
+
+
+    <sprite_type name="titre">
+      <graphics>
+	   <graphic id="main" type="graphic_text">
+	     <args>
+	       <val_int name="layer" value="4"/>
+	       <val_string name="font_file" value="medias/PLANS___.TTF"/>
+	       <val_int name="font_size" value="70"/>
+	       <val_color name="font_color" r="20" g="200" b="20"/>
+	     </args>
+	     <script>
+	      self.set_text("Plutonium Jo");
+	     </script>
+	   </graphic>
+
+      </graphics>
+      <states>
+	<state id="normal"></state>
+	<state id="move">
+	  <action id="move" type="action_movement">
+	  </action>
+	  <action id="immobile" type="action_intime">
+	    <args>
+	  <val_time name="limit" h="0" m="10" s="0" f="0"/>
+	    </args>
+	    <script>
+	      function self.on_loop()
+		 obj=self.parent.parent.parent;
+		 stages=obj.parent.parent.parent;
+		 obj.states.set_state("normal",{});
+	      end
+	    </script>
+	  </action>
+	</state>
+      </states>
+      <args>
+	<val_size name="pixel_size" w="200" h="100"/>
+      </args>
+    </sprite_type>
+
+
+    <sprite_type name="stitre">
+      <graphics>
+	   <graphic id="main" type="graphic_text">
+	     <args>
+	       <val_int name="layer" value="4"/>
+	       <val_string name="font_file" value="medias/PLANS___.TTF"/>
+	       <val_int name="font_size" value="50"/>
+	       <val_color name="font_color" r="20" g="200" b="20"/>
+	     </args>
+	     <script>
+	      self.set_text("VS mad carottes");
+	     </script>
+	   </graphic>
+
+      </graphics>
+      <states>
+	<state id="normal"></state>
+	<state id="move">
+	  <action id="move" type="action_movement">
+	  </action>
+	  <action id="immobile" type="action_intime">
+	    <args>
+	  <val_time name="limit" h="0" m="10" s="0" f="0"/>
+	    </args>
+	    <script>
+	      function self.on_loop()
+		 obj=self.parent.parent.parent;
+		 stages=obj.parent.parent.parent;
+		 obj.states.set_state("normal",{});
+	      end
+	    </script>
+	  </action>
+	</state>
+      </states>
+      <args>
+	<val_size name="pixel_size" w="200" h="100"/>
+      </args>
+    </sprite_type>
+
+
+    <sprite_type name="start">
+      <graphics>
+	   <graphic id="main" type="graphic_text">
+	     <args>
+	       <val_int name="layer" value="4"/>
+	       <val_string name="font_file" value="medias/PLANS___.TTF"/>
+	       <val_int name="font_size" value="30"/>
+	       <val_color name="font_color" r="200" g="20" b="20"/>
+	     </args>
+	     <script>
+	      self.set_text("press s to start");
+	     </script>
+	   </graphic>
+
+      </graphics>
+      <states>
+	<state id="normal"></state>
+	<state id="move">
+	  <action id="move" type="action_movement">
+	  </action>
+	  <action id="immobile" type="action_intime">
+	    <args>
+	  <val_time name="limit" h="0" m="10" s="0" f="0"/>
+	    </args>
+	    <script>
+	      function self.on_loop()
+		 obj=self.parent.parent.parent;
+		 stages=obj.parent.parent.parent;
+		 obj.states.set_state("normal",{});
+	      end
+	    </script>
+	  </action>
+	</state>
+      </states>
+      <args>
+	<val_size name="pixel_size" w="200" h="100"/>
+      </args>
+    </sprite_type>
+
+    <sprite_type name="planete">
+      <graphics>
+	   <graphic id="main" type="graphic_from_file">
+	     <args>
+		<val_string name="filename" value="medias/planete.png"/>
+		<val_size name="size" w="800" h="200"/>
+		<val_int name="layer" value="5"/>	    
+	     </args>
+	   </graphic>
+
+      </graphics>
+      <states>
+	<state id="normal"></state>
+	<state id="move">
+	  <action id="move" type="action_movement">
+	  </action>
+	  <action id="immobile" type="action_intime">
+	    <args>
+	  <val_time name="limit" h="0" m="10" s="0" f="0"/>
+	    </args>
+	    <script>
+	      function self.on_loop()
+		 obj=self.parent.parent.parent;
+		 stages=obj.parent.parent.parent;
+		 obj.states.set_state("normal",{});
+	      end
+	    </script>
+	  </action>
+	</state>
+      </states>
+      <args>
+	<val_size name="pixel_size" w="200" h="100"/>
+      </args>
+    </sprite_type>
+
+    <sprite_type name="bg">
+      <graphics>
+	<graphic id="main" type="graphic_from_drawing_script">
+	  <args>
+	    <val_int name="layer" value="-1"/>
+	    <val_text name="drawing_script">
+	      dr=self.create("box",{{r=0,g=0,b=0},{w=800,h=600}});
+	      return dr
+	    </val_text>
+	  </args>
+	  <script>
+	      function self.on_update()
+		 obj=self.parent.parent;
+		 self.move(0,0)
+	      end
+	  </script>
+	</graphic>
+
+
+      </graphics>
+      <states>
+	<state id="normal">
+	  <action id="immobile" type="action_intime">
+	    <args>
+	  <val_time name="limit" h="0" m="10" s="0" f="0"/>
+	    </args>
+	    <script>
+	      function self.on_loop()
+		 obj=self.parent.parent.parent;
+		 stages=obj.parent.parent.parent;
+	      --	      stages.load("main")
+	      end
+	    </script>
+	  </action>
+
+	</state>
+
+
+      </states>
+      <args>
+	<val_size name="pixel_size" w="800" h="600"/>
+      </args>
+    </sprite_type>
+  </sprite_types>
+      <interactions>
+	<interaction type="interaction_lua">
+	  <script>
+
+	      function self.on_keypress(e)
+		 if e=="echap" then
+		    exit(2)
+		 end
+		 
+		 if e=="s" then
+		    self.parent.parent.parent.load("main")	    
+		    
+		 end
+	      end
+	  </script>
+	</interaction>
+      </interactions>
+
+  <script>
+	      
+	      function self.on_load()
+
+
+		 self.sprites.add_sprite_named_from_type("start","start",200,-1400);
+		 self.sprites.add_sprite_named_from_type("titre","titre",100,-150);
+		 self.sprites.add_sprite_named_from_type("stitre","stitre",-1600,300);
+		 self.sprites.add_sprite_named_from_type("bg","bg",0,0);
+		 self.sprites.add_sprite_named_from_type("planete","planete",0,980);
+		 
+		 
+		 self.nps=0;
+		 while(self.nps &lt; 200) do
+		    nx=randomize(800);
+		    ny=randomize(1200);
+		    n=self.sprites.add_sprite_from_type("star",nx,ny-600);
+		    self.nps=self.nps +1;
+
+		    self.sprites[n].states.set_state("move",{
+							move={3,{dir="south"}},
+							immobile={{h=0,m=0,s=5,f=0}}
+						     })
+
+		 end
+
+		 self.sprites.titre.states.set_state
+		 ("move",{move={2,{dir="south"}},immobile={{h=0,m=0,s=6,f=0}}});
+
+		 self.sprites.start.states.set_state
+		 ("move",{move={8,{dir="south"}},immobile={{h=0,m=0,s=6,f=0}}});
+		 self.sprites.stitre.states.set_state
+		 ("move",{move={6,{dir="west"}},immobile={{h=0,m=0,s=10,f=0}}});
+		 self.sprites.planete.states.set_state
+		 ("move",{move={3,{dir="north"}},immobile={{h=0,m=0,s=6,f=0}}});
+		 self.sprites.bg.states.set_state
+		 ("normal",{immobile={{h=0,m=0,s=15,f=0}}});
+		 
+		 self.timer.start();
+	      end
+	   
+	   function self.on_loop()
+	      self.timer.step();
+	      
+	   end
+	   
+  </script>
+</stage>
