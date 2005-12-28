@@ -1,0 +1,207 @@
+
+<!ENTITY % xi.attrib "xmlns:xi   CDATA #FIXED 'http://www.w3.org/2001/XInclude'">
+<!ENTITY % xml.attrib "xml:base  CDATA  #IMPLIED">
+
+<!ELEMENT xpoc (infos,args,stages)>
+<!ATTLIST xpoc
+	  %xi.attrib;
+	  >
+
+<!ELEMENT infos (val_string|val_int|val_bool|val_text|val_size|val_position|val_color|val_time|val_list)*>
+
+<!-- Stages -->
+
+<!ELEMENT stages (stage*)>
+<!ATTLIST stages
+	  %xi.attrib;
+	  >
+
+<!ELEMENT stage (args?,stages?,game_map_type?,sprite_types?,interactions?,script?)>
+<!ATTLIST stage
+	  id CDATA #REQUIRED
+	  type CDATA #REQUIRED
+	  %xi.attrib;
+	  >
+
+<!-- Game -->
+
+<!ELEMENT sprite_types (sprite_type*)>
+<!ATTLIST sprite_types
+	  %xi.attrib;
+	  %xml.attrib;
+	  >
+
+<!ELEMENT sprite_type (graphics?,states?,args?,properties?,script?)>
+<!ATTLIST sprite_type 
+	  name CDATA #REQUIRED
+	  %xi.attrib;
+	  %xml.attrib;
+	  >
+
+<!ELEMENT game_map_type (game_tile_layers_type,game_object_maps_type)>
+<!ATTLIST game_map_type
+	  name CDATA #REQUIRED
+	  %xi.attrib;
+	  %xml.attrib;
+	  >
+
+<!ELEMENT game_tile_layers_type (game_tile_layer_type*)>
+
+<!ELEMENT game_tile_layer_type (args)>
+<!ATTLIST game_tile_layer_type
+	  id CDATA #REQUIRED
+	  >
+
+<!ELEMENT game_object_maps_type (game_object_map_type*)>
+
+<!ELEMENT game_object_map_type (args?,game_object_types)>
+<!ATTLIST game_object_map_type
+	  id CDATA #REQUIRED
+	  type CDATA #REQUIRED
+	  >
+
+<!ELEMENT game_object_types (game_object_type*)>
+<!ATTLIST game_object_types
+	  %xi.attrib;
+	  %xml.attrib;
+	  >
+
+<!ELEMENT game_object_type (graphics?,states?,args?,properties?,script?)>
+<!ATTLIST game_object_type 
+	  name CDATA #REQUIRED
+	  %xi.attrib;
+	  %xml.attrib;
+	  >
+
+<!-- Graphics -->
+
+<!ELEMENT graphics (graphic*)>
+<!ELEMENT graphic (args?,script?)>
+<!ATTLIST graphic 
+	  id CDATA #REQUIRED
+	  type CDATA #REQUIRED
+	  %xi.attrib;
+	  %xml.attrib;
+	  >
+
+<!-- Actions -->
+
+<!ELEMENT states (state*)>
+<!ATTLIST states
+	  %xi.attrib;
+	  %xml.attrib;
+	  >
+
+<!ELEMENT state (action*,script?)>
+<!ATTLIST state
+	  id CDATA #REQUIRED
+	  >
+
+<!ELEMENT action (args?,script?)>
+<!ATTLIST action
+	  id CDATA #REQUIRED
+	  type CDATA #REQUIRED
+	  %xi.attrib;
+	  %xml.attrib;
+	  >
+
+
+<!-- Args and Properties -->
+
+<!ELEMENT args (val_string|val_int|val_bool|val_text|val_size|val_position|val_color|val_time|val_list)*>
+<!ELEMENT properties ANY>
+
+<!-- Values -->
+
+<!ELEMENT val_list (val_string|val_int|val_bool|val_text|val_size|val_position|val_color|val_time|val_list)*>
+<!ATTLIST val_list 
+	  name CDATA #IMPLIED>
+
+
+<!ELEMENT val_string EMPTY>
+<!ATTLIST val_string 
+	  name CDATA #IMPLIED
+	  value CDATA #REQUIRED>
+
+<!ELEMENT val_int EMPTY>
+<!ATTLIST val_int 
+	  name CDATA #IMPLIED
+	  value CDATA #REQUIRED>
+
+<!ELEMENT val_bool EMPTY>
+<!ATTLIST val_bool 
+	  name CDATA #IMPLIED
+	  value CDATA #REQUIRED>
+
+<!ELEMENT val_size EMPTY>
+<!ATTLIST val_size 
+	  name CDATA #IMPLIED
+	  w CDATA #REQUIRED
+	  h CDATA #REQUIRED
+	  >
+
+<!ELEMENT val_position EMPTY>
+<!ATTLIST val_position
+	  name CDATA #IMPLIED
+	  x CDATA #REQUIRED
+	  y CDATA #REQUIRED
+	  >
+
+<!ELEMENT val_color EMPTY>
+<!ATTLIST val_color
+	  name CDATA #IMPLIED
+	  r CDATA #REQUIRED
+	  g CDATA #REQUIRED
+	  b CDATA #REQUIRED
+	  >
+
+<!ELEMENT val_time EMPTY>
+<!ATTLIST val_time
+	  name CDATA #IMPLIED
+	  h CDATA #REQUIRED
+	  m CDATA #REQUIRED
+	  s CDATA #REQUIRED
+	  f CDATA #REQUIRED
+	  >
+
+<!ELEMENT val_text (#PCDATA)>
+<!ATTLIST val_text 
+	  name CDATA #IMPLIED
+	  >
+
+<!-- Others -->
+
+<!ELEMENT interactions (interaction*)>
+<!ATTLIST interactions
+	  %xi.attrib;
+	  %xml.attrib;
+	  >
+
+<!ELEMENT interaction (script?)>
+<!ATTLIST interaction
+	  type CDATA #IMPLIED
+	  %xi.attrib;
+	  %xml.attrib;
+	  >
+
+<!ELEMENT script ANY>
+
+<!-- XInclude -->
+
+<!ELEMENT xi:include (xi:fallback?)>
+<!ATTLIST xi:include
+    xmlns:xi        CDATA       #FIXED    "http://www.w3.org/2001/XInclude"
+    href            CDATA       #IMPLIED
+    parse           (xml|text)  "xml"
+    xpointer        CDATA       #IMPLIED
+    encoding        CDATA       #IMPLIED
+    accept          CDATA       #IMPLIED
+    accept-language CDATA       #IMPLIED
+>
+
+<!ELEMENT xi:fallback ANY>
+<!ATTLIST xi:fallback
+    xmlns:xi   CDATA   #FIXED   "http://www.w3.org/2001/XInclude"
+>
+
+
