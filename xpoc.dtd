@@ -1,17 +1,16 @@
-
 <!ENTITY % xi.attrib "xmlns:xi   CDATA #FIXED 'http://www.w3.org/2001/XInclude'">
 <!ENTITY % xml.attrib "xml:base  CDATA  #IMPLIED">
 
 <!ELEMENT xpoc (infos,args,stages)>
-<!ATTLIST xpoc
-	  %xi.attrib;
-	  >
-
+<!ATTLIST xpoc 
+	xmlns CDATA #IMPLIED
+	%xi.attrib;
+	>
 <!ELEMENT infos (val_string|val_int|val_bool|val_text|val_size|val_position|val_color|val_time|val_list)*>
 
 <!-- Stages -->
 
-<!ELEMENT stages (xi:include+,stage*)>
+<!ELEMENT stages (xi:include*,stage*)>
 <!ATTLIST stages
 	  %xi.attrib;
 	  >
