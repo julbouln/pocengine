@@ -14,7 +14,7 @@
     <val_size name="video_size" w="800" h="600"/>
     <val_size name="video_default_size" w="1024" h="768"/>
     
-    <val_string name="stage_start" value="main"/>
+    <val_string name="stage_start" value="intro"/>
 
   </args>
   
@@ -35,6 +35,7 @@
 	     </args>
 	     <script>
 		self.set_text("Plutonium Jo");
+
 		function self.on_update()
 		   obj=self.parent.parent;
 		   self.move(7,7)
