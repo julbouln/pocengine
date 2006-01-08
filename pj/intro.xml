@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <stage id="intro" type="sprite_engine"
        xmlns:xi="http://www.w3.org/2001/XInclude">
   <sprite_types>
@@ -226,7 +226,6 @@
 	      function self.on_loop()
 		 obj=self.parent.parent.parent;
 		 stages=obj.parent.parent.parent;
-	      --	      stages.load("main")
 	      end
 	    </script>
 	  </action>
@@ -259,7 +258,7 @@
       </interactions>
 
   <script>
-	      
+	      <![CDATA[
 	      function self.on_load()
 
 
@@ -271,7 +270,7 @@
 		 
 		 
 		 self.nps=0;
-		 while(self.nps &lt; 200) do
+		 while(self.nps < 200) do
 		    nx=randomize(800);
 		    ny=randomize(1200);
 		    n=self.sprites.add_sprite_from_type("star",nx,ny-600);
@@ -303,6 +302,6 @@
 	      self.timer.step();
 	      
 	   end
-	   
+     ]]>
   </script>
 </stage>

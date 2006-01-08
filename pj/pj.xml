@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xpoc SYSTEM "../xpoc.dtd">
 <xpoc xmlns="http://www.rashitoul.net/xpoc"
       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -14,13 +14,13 @@
     <val_size name="video_size" w="800" h="600"/>
     <val_size name="video_default_size" w="1024" h="768"/>
     
-    <val_string name="stage_start" value="intro"/>
+    <val_string name="stage_start" value="main"/>
 
   </args>
   
   <stages>
 <!--   <xi:include href="intro_poc.xml"/> -->
-   <xi:include href="intro.xml"/>
+   <xi:include href="intro.xml"/> 
     <stage id="main" type="sprite_engine">
       <sprite_types>
 	<sprite_type name="bg">
@@ -35,10 +35,10 @@
 	     </args>
 	     <script>
 		self.set_text("Plutonium Jo");
-	     function self.on_update()
-		obj=self.parent.parent;
-		self.move(7,7)
-	     end
+		function self.on_update()
+		   obj=self.parent.parent;
+		   self.move(7,7)
+		end
 	     </script>
 	   </graphic>
 
@@ -50,11 +50,12 @@
 	       <val_color name="font_color" r="20" g="200" b="20"/>
 	     </args>
 	     <script>
-		self.set_text("Plutonium Jo");
-	     function self.on_update()
-		obj=self.parent.parent;
-		self.move(4,4)
-	     end
+
+		   self.set_text("Plutonium Jo");
+		   function self.on_update()
+		      obj=self.parent.parent;
+		      self.move(4,4)
+		   end
 	     </script>
 	   </graphic>
 
@@ -118,6 +119,7 @@
 
 	      <action id="collision" type="action_collision">
 		<script>
+		<![CDATA[
 		function self.on_collide(id)
 		   obj=self.parent.parent.parent;
 		   
@@ -125,7 +127,7 @@
 		   if (id=="bg") then
 		   else
 		      
-		      if (obj.get_y()+obj.get_h() &lt; obj.parent[id].get_y()+20) then
+		      if (obj.get_y()+obj.get_h() < obj.parent[id].get_y()+20) then
 			 self.parent.parent.set_state
 			 ("move",
 			  {
@@ -133,17 +135,10 @@
 			     move={2,{dir=self.parent.parent.parent.dir}}
 			  });
 			 
-			 --		  ny=obj.parent[id].get_y() - obj.get_h();
-			 --		  nx=obj.get_x();
-			 
-			 --		  obj.jump(nx,ny);
-			 
-			 --		  obj.graphics.main.on_update();
-			 --		  obj.graphics_update();
-			 
 		      end
 		   end
 		end
+	  ]]>
 		</script>		
 	      </action>
 
@@ -161,7 +156,6 @@
 		</args>
 
 		<script>
-
 		function self.on_loop()
 		   obj=self.parent.parent.parent;
 		   fr=self.get_frame();
@@ -180,16 +174,17 @@
 	    <state id="jump">
 	      <action id="collision" type="action_collision">
 		<script>
+		<![CDATA[
+
 		function self.on_collide(id)
 		   obj=self.parent.parent.parent;
 		   
 		   if (id=="bg") then
 		   else
-		      if (self.letjump &gt; 1) then
-			 if (obj.get_y() - obj.oy &gt; 0) then
-			    --		  print (obj.get_y()+obj.get_h());
-			    --		  print (obj.parent[id].get_y()+20);
-			    if (obj.get_y()+obj.get_h() &lt; obj.parent[id].get_y()+20) then
+		      if (self.letjump > 1) then
+			 if (obj.get_y() - obj.oy > 0) then
+			    
+			    if (obj.get_y()+obj.get_h() < obj.parent[id].get_y()+20) then
 			       
 			       self.parent.parent.set_state
 			       ("jump",
@@ -215,6 +210,7 @@
 	     function self.on_loop()
 		self.letjump=self.letjump+1;
 	     end
+       ]]>
 		</script>		
 	      </action>
 
@@ -252,12 +248,14 @@
 
 	      <action id="collision" type="action_collision">
 		<script>
+		<![CDATA[
+
 		function self.on_collide(id)
 		   obj=self.parent.parent.parent;
 		   
 		   if (id=="bg") then
 		   else
-		      if (obj.get_y()+obj.get_h() &lt; obj.parent[id].get_y()+20) then
+		      if (obj.get_y()+obj.get_h() < obj.parent[id].get_y()+20) then
 			 self.parent.parent.set_state
 			 ("normal",
 			  {
@@ -266,6 +264,7 @@
 		      end
 		   end
 		end
+	  ]]>
 		</script>		
 	      </action>
 
@@ -303,6 +302,7 @@
 
 	      <action id="collision" type="action_collision">
 		<script>
+
 		function self.on_collide(id)
 		   
 		   if (id=="bg") then
@@ -377,13 +377,15 @@
 	    <state id="move">
 	     <action id="move" type="action_movement">
 	       <script>
+		<![CDATA[
+
 		function self.on_loop()
 		   
 		   obj=self.parent.parent.parent;
 		   x=obj.get_x();
 		   y=obj.get_y();
 		   
-		   if(x &gt; 800) then
+		   if(x > 800) then
 		      self.parent.parent.set_state("move",
 						   {
 						      physics={0,pi()/2,9.8,10.0},
@@ -392,7 +394,7 @@
 		      self.parent.parent.parent.dir="east";
 		   end
 		   
-		   if(x &lt; 0) then
+		   if(x < 0) then
 		      self.parent.parent.set_state("move",
 						   {
 						      physics={0,pi()/2,9.8,10.0},
@@ -403,17 +405,20 @@
 
 
 		end
+	  ]]>
 	       </script>
 	     </action>
 
 	      <action id="collision" type="action_collision">
 		<script>
+		<![CDATA[
+
 		function self.on_collide(id)
 		   obj=self.parent.parent.parent;
 		   
 		   if (id=="bg" or obj.parent[id].get_type()=="carotte") then
 		   else
-		      if (obj.get_y()+obj.get_h() &lt; obj.parent[id].get_y()+20) then
+		      if (obj.get_y()+obj.get_h() < obj.parent[id].get_y()+20) then
 			 self.parent.parent.set_state("move",
 						      {
 							 physics={0,pi()/2,9.8,10.0},
@@ -422,6 +427,7 @@
 		      end
 		   end
 		end
+	  ]]>
 		</script>		
 	      </action>
 
@@ -439,7 +445,6 @@
 		</args>
 
 		<script>
-
 		  function self.on_loop()
 		     obj=self.parent.parent.parent;
 		     fr=self.get_frame();
@@ -518,6 +523,7 @@
       <interactions>
 	<interaction type="interaction_lua">
 	  <script>
+		<![CDATA[
 		  
 		  
 	       function self.on_keyrelease(e)
@@ -622,19 +628,21 @@
 		  end
 		  
 	       end
-	       
+
+	 ]]>	       
 	  </script>
 	</interaction>
       </interactions>
       <script>
-		  
+	    <![CDATA[
+				   
 		  function self.on_load()
 		     self.sprites.add_sprite_named_from_type("bg","bg",0,0);
 		     self.sprites.add_sprite_named_from_type("pj","plutoniumjo",100,0);
 		     self.sprites.add_sprite_from_type("sol",-200,600);
 		     
 		     self.npc=0;
-		     while(self.npc &lt; 5) do
+		     while(self.npc < 5) do
 			nx=randomize(800) - 100;
 			ny=randomize(600) - 50;
 			c=self.sprites.add_sprite_from_type("carotte",nx,0);
@@ -650,7 +658,7 @@
 		     
 		     self.npf=0;
 		     
-		     while(self.npf &lt; 50) do
+		     while(self.npf < 50) do
 			nx=randomize(10);
 			ny=randomize(20);
 			self.sprites.add_sprite_from_type("plateforme",nx*128,ny*32);
@@ -674,6 +682,7 @@
 		  self.timer.step();
 		  
 	       end
+	 ]]>
       </script>
     </stage>
   </stages>
