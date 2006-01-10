@@ -1,0 +1,259 @@
+<sprite_type name="plutoniumjo">
+  <graphics>
+    
+    <graphic id="main" type="graphic_from_drawing_fun">
+      <args>
+	<val_string value="with_alpha"/>	   
+	<val_color r="255" g="255" b="255"/>
+	<val_string value="with_mirror"/>
+	<val_string value="load_multiple"/>
+	<val_string value="medias/plutoniumjo.png"/>
+	<val_size w="42" h="56"/>
+      </args>
+    </graphic>
+  </graphics>
+  <states>
+    <state id="move">
+      <action id="move" type="action_movement">
+      </action>
+
+      <action id="collision" type="action_collision">
+	<script>
+	  <![CDATA[
+		function self.on_collide(id)
+		   obj=self.parent.parent.parent;
+		   
+		   
+		   if (id=="bg") then
+		   else
+		      
+		      if (obj.get_y()+obj.get_h() < obj.parent[id].get_y()+20) then
+			 self.parent.parent.set_state
+			 ("move",
+			  {
+			     physics={0,pi()/2,9.8,10.0},
+			     move={2,{dir=self.parent.parent.parent.dir}}
+			  });
+			 
+		      end
+		   end
+		end
+		]]>
+	</script>		
+      </action>
+      
+      <action id="physics" type="action_2d_physics">
+      </action>
+      <action id="anim" type="action_anim">
+	<args>
+	  <val_int name="refresh" value="6"/>
+	  <val_list name="frames">
+	    <val_int value="0"/>
+	    <val_int value="1"/>
+	    <val_int value="0"/>
+	    <val_int value="2"/>
+	  </val_list>
+	</args>
+	
+	<script>
+	  function self.on_loop()
+		   obj=self.parent.parent.parent;
+		   fr=self.get_frame();
+		   
+		   if (obj.dir=="east") then
+		      fr=fr+5;
+		   end
+		   
+		   obj.graphics.main.set_cur_drawing (fr);
+		end
+	</script>
+	
+      </action>
+    </state>
+
+    <state id="jump">
+      <action id="collision" type="action_collision">
+	<script>
+	  <![CDATA[
+
+		function self.on_collide(id)
+		   obj=self.parent.parent.parent;
+		   
+		   if (id=="bg") then
+		   else
+		      if (self.letjump > 1) then
+			 if (obj.get_y() - obj.oy > 0) then
+			    
+			    if (obj.get_y()+obj.get_h() < obj.parent[id].get_y()+20) then
+			       
+			       self.parent.parent.set_state
+			       ("jump",
+				{
+				   physics={0,pi()/2,9.8,10.0}
+				});
+			       
+			       self.parent.parent.set_state
+			       ("normal",
+				{
+				   physics={0,pi()/2,9.8,10.0}
+				});
+			    end
+			 end
+		  end
+	       end
+	    end
+	     
+	     function self.on_start(ve)
+		self.letjump=0;
+	     end
+	     
+	     function self.on_loop()
+		self.letjump=self.letjump+1;
+	     end
+       ]]>
+	</script>		
+      </action>
+
+      <action id="physics" type="action_2d_physics">
+      </action>
+      <action id="anim" type="action_anim">
+	<args>
+	  <val_int name="refresh" value="6"/>
+	  <val_list name="frames">
+	    <val_int value="3"/>
+	    
+	  </val_list>
+	</args>
+	
+	<script>
+	  function self.on_loop()
+		   obj=self.parent.parent.parent;
+		   fr=self.get_frame();
+		   
+		   obj.ox=obj.get_x();
+		   obj.oy=obj.get_y();
+		   
+		   if (obj.dir=="east") then
+		      fr=fr+5;
+		   end
+		   
+		   obj.graphics.main.set_cur_drawing (fr);
+		end
+	</script>
+
+      </action>
+    </state>
+
+    <state id="normal">
+      
+      <action id="collision" type="action_collision">
+	<script>
+		<![CDATA[
+
+		function self.on_collide(id)
+		   obj=self.parent.parent.parent;
+		   
+		   if (id=="bg") then
+		   else
+		      if (obj.get_y()+obj.get_h() < obj.parent[id].get_y()+20) then
+			 self.parent.parent.set_state
+			 ("normal",
+			  {
+			     physics={0,pi()/2,9.8,10.0}
+			  });
+		      end
+		   end
+		end
+	  ]]>
+	</script>		
+      </action>
+      
+      <action id="physics" type="action_2d_physics">
+      </action>
+
+      <action id="anim" type="action_anim">
+	<args>
+	  <val_int name="refresh" value="10"/>
+	  <val_list name="frames">
+	    <val_int value="0"/>
+	    
+	  </val_list>
+	</args>
+	
+	<script>
+	  function self.on_loop()
+		   obj=self.parent.parent.parent;
+		   fr=self.get_frame();
+		   
+		   if (obj.dir=="east") then
+		      fr=fr+5;
+		   end
+		   
+		   obj.graphics.main.set_cur_drawing (fr);
+		end
+	</script>
+
+      </action>
+
+    </state>
+
+
+    <state id="attack">
+
+      <action id="collision" type="action_collision">
+	<script>
+
+		function self.on_collide(id)
+		   
+		   if (id=="bg") then
+		   else
+		      self.parent.parent.set_state
+		      ("attack",
+		       {
+			  physics={0,pi()/2,9.8,10.0}
+		       });
+		   end
+		end
+	</script>		
+      </action>
+
+      <action id="physics" type="action_2d_physics">
+      </action>
+      
+      <action id="anim" type="action_anim">
+	<args>
+	  <val_int name="refresh" value="10"/>
+	  <val_list name="frames">
+	    <val_int value="0"/>
+	    <val_int value="4"/>
+	    
+	  </val_list>
+	</args>
+
+	<script>
+		function self.on_loop()
+		   obj=self.parent.parent.parent;
+		   fr=self.get_frame();
+		   
+		   if (obj.dir=="east") then
+		      fr=fr+5;
+		   end
+		   
+		   obj.graphics.main.set_cur_drawing (fr);
+		end
+	</script>
+
+      </action>
+      
+    </state>
+
+  </states>
+  
+  <args>
+    <val_size  name="pixel_size" w="30" h="56"/>
+  </args>
+  <script>
+    self.dir="west";
+  </script>
+
+</sprite_type>
