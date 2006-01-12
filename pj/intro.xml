@@ -7,12 +7,16 @@
       <graphics>
 	<graphic id="main" type="graphic_from_drawing_script">
 	  <args>
+	    <val_string name="drawing_id" value="etoile"/>
 	    <val_int name="layer" value="1"/>
-	    <val_text name="drawing_script">
-	      dr=self.create("box",{{r=200,g=200,b=200},{w=1,h=1}});
-	      return dr
-	    </val_text>
 	  </args>
+	  <script>
+	    function self.drawing_script()
+	    dr=self.create("box",{{r=200,g=200,b=200},{w=1,h=1}});
+	    return dr
+	    end
+	  </script>
+
 	</graphic>
       </graphics>
       <states>
@@ -200,13 +204,15 @@
       <graphics>
 	<graphic id="main" type="graphic_from_drawing_script">
 	  <args>
+	    <val_string name="drawing_id" value="espace"/>
 	    <val_int name="layer" value="-1"/>
-	    <val_text name="drawing_script">
-	      dr=self.create("box",{{r=0,g=0,b=0},{w=800,h=600}});
-	      return dr
-	    </val_text>
 	  </args>
 	  <script>
+	      function self.drawing_script()
+		 dr=self.create("box",{{r=0,g=0,b=0},{w=800,h=600}});
+		 return dr
+	      end
+
 	      function self.on_update()
 		 obj=self.parent.parent;
 		 self.move(0,0)

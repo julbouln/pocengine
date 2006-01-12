@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xpoc xmlns:xi="http://www.w3.org/2001/XInclude">
  <infos>
    <val_string name="cmd" value="test"/>
@@ -25,18 +25,20 @@
 	   <graphic id="main" type="graphic_from_drawing_script">
 	     <args>
 	       <val_string name="drawing_id" value="fond_gr"/>
-       <val_text name="drawing_script">
-        dr=self.create("box",{{r=0,g=0,b=255},{w=800,h=600}});
-	return dr
-</val_text>
 	     </args>
 
 	     <script>
-          function self.on_update()
+
+	function self.drawing_script()
+	   dr=self.create("box",{{r=0,g=0,b=255},{w=800,h=600}});
+	   return dr
+	end
+
+     function self.on_update()
         obj=self.parent.parent;
   	self.move(obj.get_x(),obj.get_y())
      end
-        </script>
+	  </script>
 	   </graphic>
 	   </graphics>
 	 <args>
@@ -51,11 +53,14 @@
 
      <args>
        <val_string name="drawing_id" value="lapin_gr"/>
-       <val_text name="drawing_script">
+     </args>     
+     <script>
+	
+   function self.drawing_script()
 --      rs=randomize(50);
 
-rs=25;
-rrs=20;
+      rs=25;
+      rrs=20;
         dr=self.create("load",{{w=540,h=727},"test/lapin.png"});
 	drr=self.copy(dr,0,"resize",{{w=rs,h=rs}});
         self.write(drr,0,"set_alpha",{64,{r=255,g=255,b=255}});
@@ -69,9 +74,8 @@ rrs=20;
 	end
 
         return drr
-      </val_text>
-     </args>     
-     <script>
+     end
+
      function self.on_update()
         obj=self.parent.parent;
 	self.move(obj.get_x(),obj.get_y())
@@ -120,7 +124,7 @@ rrs=20;
      obj=self.parent.parent.parent;
      fr=self.get_frame();
      obj.graphics.main.set_cur_drawing (fr);
---     print(fr); 
+
     end
     </script>
     </action>
